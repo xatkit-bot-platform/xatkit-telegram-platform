@@ -9,6 +9,8 @@ Receive and send messages from [Telegram](https://telegram.org/).
 
 The Telegram platform is a concrete implementation of the [*ChatPlatform*](https://github.com/xatkit-bot-platform/xatkit-chat-platform).
 
+We rely on [this](https://github.com/pengrad/java-telegram-bot-api) Java-based wrapper of the [Telegram API for Bots]
+(https://core.telegram.org/api#bot-api).
 ## Providers
 
 The Telegram platform defines the following providers:
@@ -28,6 +30,6 @@ The Telegram platform supports the following configuration options
 
 | Key                  | Values | Description                                                  | Constraint    |
 | -------------------- | ------ | ------------------------------------------------------------ | ------------- |
-| `xatkit.telegram.token` | String | The Telegram token used by Xatkit to interact with the [Telegram API](https://core.telegram.org/bots) |
+| `xatkit.telegram.token` | String | The Telegram token used by Xatkit to interact with the [Telegram API](https://core.telegram.org/bots). You can get a token via the [BotFather service](https://core.telegram.org/bots#6-botfather) |
 
 
