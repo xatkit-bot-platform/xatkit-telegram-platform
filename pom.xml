@@ -17,17 +17,17 @@
     <packaging>jar</packaging>
 
     <properties>
-        <telegram-api.version>5.5.0</telegram-api.version>
+        <telegrambots.version>5.5.0</telegrambots.version>
     </properties>
 
     <dependencies>
 
         <!-- Telegram  -->
 
-        <!-- https://mvnrepository.com/artifact/com.github.pengrad/java-telegram-bot-api -->
         <dependency>
-            <groupId>com.github.pengrad</groupId>
-            <artifactId>java-telegram-bot-api</artifactId>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>5.5.0</version>
         </dependency>
 
         <!-- Utils -->
@@ -96,6 +96,11 @@
                 <version>${telegram-api.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.telegram</groupId>
+                <artifactId>telegrambots</artifactId>
+                <version>${telegrambots.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
