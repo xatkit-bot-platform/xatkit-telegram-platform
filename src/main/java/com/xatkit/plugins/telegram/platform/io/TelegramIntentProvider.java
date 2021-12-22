@@ -8,9 +8,12 @@ import com.xatkit.plugins.chat.ChatUtils;
 import com.xatkit.plugins.chat.platform.io.ChatIntentProvider;
 import com.xatkit.plugins.telegram.TelegramUtils;
 import com.xatkit.plugins.telegram.platform.TelegramPlatform;
+import fr.inria.atlanmod.commons.log.Log;
 import org.apache.commons.configuration2.Configuration;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.io.IOException;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkNotNull;
 
@@ -61,7 +64,7 @@ public class TelegramIntentProvider extends ChatIntentProvider<TelegramPlatform>
 
         Message message = update.getMessage();
 
-        String rawMessage = cleanCommandSymbol(message.getText());
+        String rawMessage = cleanMessage(message.getText());
         String channel = message.getChat().getId().toString();
         String user = update.getChatMember().toString();
         Boolean isGroupChannel = message.getChat().isGroupChat();
@@ -110,6 +113,12 @@ public class TelegramIntentProvider extends ChatIntentProvider<TelegramPlatform>
         }
     }
 
+    private String cleanMessage(String message) {
+        message = cleanCommandSymbol(message);
+        message = cleanUsernameFromCommand(message);
+        return message;
+    }
+
     private String cleanCommandSymbol(String message)
     {
         if (message.startsWith("/")) {
@@ -118,6 +127,31 @@ public class TelegramIntentProvider extends ChatIntentProvider<TelegramPlatform>
         else {
             return message;
         }
+    }
+
+    //When a group has more than one bot, commands can be directed to a bot attaching @botusername to the command
+    //This function will remove the mention before trying to recognize the intent in the text
+    private String cleanUsernameFromCommand(String message) {
+        String usernameMention =
+                "@"+ this.runtimePlatform.getConfiguration().getString(TelegramUtils.TELEGRAM_BOT_USERNAME);
+        if (message.indexOf(usernameMention)>=0) {
+            StringBuffer text = new StringBuffer(message);
+            //To improve, we should only remove the first occurrent. Even better if we check is attached to a command
+            // name
+            text.replace(0, message.length(), message );
+            message = text.toString();
+        }
+
+        return message;
+    }
+
+
+    /**
+     * Disconnects the underlying Slack RTM clients.
+     */
+    @Override
+    public void close() {
+        Log.info("Closing the Telegram connector");
     }
 
 }
