@@ -90,13 +90,7 @@
         <dependencies>
 
             <!-- Telegram -->
-            <dependency>
-                <groupId>com.github.pengrad</groupId>
-                <artifactId>java-telegram-bot-api</artifactId>
-                <version>${telegram-api.version}</version>
-            </dependency>
-
-            <dependency>
+           <dependency>
                 <groupId>org.telegram</groupId>
                 <artifactId>telegrambots</artifactId>
                 <version>${telegrambots.version}</version>

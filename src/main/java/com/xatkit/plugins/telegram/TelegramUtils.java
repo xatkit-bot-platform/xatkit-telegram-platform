@@ -31,10 +31,18 @@ public interface TelegramUtils extends ChatUtils {
      */
     String TELEGRAM_BOT_USERNAME = "xatkit.telegram.botusername";
 
+    /**
+     * The {@link Configuration} key to store whether to ignore fallback intents on group channels.
+     * <p>
+     * This value is set to {@code false} by default.
+     *
+     * @see #DEFAULT_IGNORE_FALLBACK_ON_GROUP_CHANNELS
+     */
+    String IGNORE_FALLBACK_ON_GROUP_CHANNELS_KEY = "xatkit.slack.ignore_fallback_on_group_channels";
 
-
-
-
-
+    /**
+     * The default value of the {@link #IGNORE_FALLBACK_ON_GROUP_CHANNELS_KEY} {@link Configuration} key.
+     */
+    boolean DEFAULT_IGNORE_FALLBACK_ON_GROUP_CHANNELS = false;
 
 }
