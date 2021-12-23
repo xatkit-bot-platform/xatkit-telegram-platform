@@ -2,7 +2,6 @@ package com.xatkit.plugins.telegram.platform;
 
 import com.xatkit.core.XatkitBot;
 import com.xatkit.core.XatkitException;
-import com.xatkit.core.platform.RuntimePlatform;
 import com.xatkit.core.platform.action.RuntimeActionResult;
 import com.xatkit.execution.StateContext;
 import com.xatkit.plugins.chat.platform.ChatPlatform;
@@ -16,12 +15,7 @@ import com.xatkit.plugins.telegram.TelegramUtils;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import com.xatkit.plugins.telegram.platform.action.Reply;
-
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-
-import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
 import static java.util.Objects.nonNull;
 
 /**
@@ -29,9 +23,20 @@ import static java.util.Objects.nonNull;
  */
 public class TelegramPlatform extends ChatPlatform {
 
-    TelegramBotWrapperLongPolling telegramBot;
-    TelegramBotsApi telegramBotsAPI;
-    TelegramIntentProvider telegramIntentProvider = new TelegramIntentProvider(this);
+    /**
+     * The bot wrapper that extends the Telegram Java library we are using.
+     */
+    private TelegramBotWrapperLongPolling telegramBot;
+
+    /**
+     * The wrapper for the TelegramAPI where we will register the bot.
+     */
+    private TelegramBotsApi telegramBotsAPI;
+
+    /**
+     * The Intent provider that will get Telegram updates via the {@code telegramBot}.
+     */
+    private TelegramIntentProvider telegramIntentProvider = new TelegramIntentProvider(this);
 
     /**
      * {@inheritDoc}
@@ -72,7 +77,7 @@ public class TelegramPlatform extends ChatPlatform {
                //We create the bot and link it with the telegramIntentProvider that will process updates from
                // Telegram received by the bot
                telegramBot = new TelegramBotWrapperLongPolling(telegramToken, botName, botUsername, telegramIntentProvider);
-               TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+               telegramBotsAPI = new TelegramBotsApi(DefaultBotSession.class);
                telegramBotsAPI.registerBot(telegramBot);
            } catch (TelegramApiException e) {
                 throw new XatkitException("Cannot initialize the Telegram connector with the given token and "

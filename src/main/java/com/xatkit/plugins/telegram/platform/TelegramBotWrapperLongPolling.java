@@ -1,8 +1,6 @@
 package com.xatkit.plugins.telegram.platform;
 
-import com.xatkit.plugins.chat.platform.ChatPlatform;
 import com.xatkit.plugins.telegram.platform.io.TelegramIntentProvider;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -16,32 +14,32 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 public class TelegramBotWrapperLongPolling extends TelegramLongPollingBot {
 
-    String botToken;
-    String botName;
-    String botUsername;
-    TelegramIntentProvider telegramIntentProvider;
+    final private String BOT_TOKEN;
+    final private String BOT_NAME;
+    final private String BOT_USERNAME;
+    private TelegramIntentProvider telegramIntentProvider;
 
     public TelegramBotWrapperLongPolling(String botToken, String botName, String botUsername,
                                          TelegramIntentProvider telegramIntentProvider) {
         super();
-        this.botToken = botToken;
-        this.botName = botName;
-        this.botUsername = botUsername;
+        this.BOT_TOKEN = botToken;
+        this.BOT_NAME = botName;
+        this.BOT_USERNAME = botUsername;
         this.telegramIntentProvider = telegramIntentProvider;
     }
 
     @Override
     public String getBotUsername() {
-        return botUsername;
+        return BOT_USERNAME;
     }
 
     public String getBotName() {
-        return botName;
+        return BOT_NAME;
     }
 
     @Override
     public String getBotToken() {
-        return botToken;
+        return BOT_TOKEN;
     }
 
     @Override

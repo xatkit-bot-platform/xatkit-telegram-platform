@@ -9,7 +9,6 @@ import org.apache.commons.configuration2.Configuration;
 
 import java.util.Arrays;
 
-import static com.xatkit.dsl.DSL.eventIs;
 import static com.xatkit.dsl.DSL.fallbackState;
 import static com.xatkit.dsl.DSL.intent;
 import static com.xatkit.dsl.DSL.intentIs;
@@ -72,14 +71,11 @@ public class BotTest {
         handleWelcome
                 .body(context -> telegramPlatform.reply(context, "Hi, nice to meet you!"))
                 .next()
-                /*
-                 * A transition that is automatically navigated: in this case once we have answered the user we
-                 * want to go back in a state where we wait for the next intent.
-                 */
                 .moveTo(awaitingInput);
 
         handleStart
-                .body(context -> telegramPlatform.reply(context, "Great, let's go ahead, what do you want to do",
+                .body(context -> telegramPlatform.reply(context, "Great, let's go ahead, what do you want to know "
+                                + "about",
                                 Arrays.asList("weather","pollution")))
                 .next()
                 .when(intentIs(weather)).moveTo(handleWeather)
@@ -106,6 +102,12 @@ public class BotTest {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
+        botConfiguration.addProperty("xatkit.telegram.botname", "Xatkit Test");
+        botConfiguration.addProperty("xatkit.telegram.botusername", "Your username");
+        botConfiguration.addProperty("xatkit.telegram.token", "Your token");
+     //   botConfiguration.addProperty("xatkit.telegram.ignore_fallback_on_group_channels", true);
+
+
 
         XatkitBot xatkitBot = new XatkitBot(botModel, botConfiguration);
         xatkitBot.run();

@@ -7,20 +7,16 @@ import com.xatkit.plugins.telegram.platform.QuickButtonDescriptor;
 import com.xatkit.plugins.telegram.platform.TelegramBotWrapperLongPolling;
 import com.xatkit.plugins.telegram.platform.TelegramPlatform;
 import lombok.NonNull;
-import org.checkerframework.checker.units.qual.K;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup.ReplyKeyboardMarkupBuilder;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import javax.annotation.Nullable;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static fr.inria.atlanmod.commons.Preconditions.checkArgument;
 
@@ -38,8 +34,6 @@ public class PostMessage extends RuntimeMessageAction<TelegramPlatform> {
      * The descriptors of the <i>quick buttons</i> to print to the user.
      */
     private List<QuickButtonDescriptor> quickButtonDescriptors;
-
-
 
     /**
      * Constructs a new {@link PostMessage} with the provided {@code platform}, {@code session}, {@code
@@ -74,8 +68,8 @@ public class PostMessage extends RuntimeMessageAction<TelegramPlatform> {
     public PostMessage(@NonNull TelegramPlatform platform, @NonNull StateContext context, @NonNull String message,
                        @NonNull List<String> buttons, @NonNull String channel) {
         super(platform, context, message);
-        checkArgument(!(channel.isEmpty()), "Cannot construct a %s action with the provided " +
-                "channel %s, expected a non-null and not empty String", this.getClass().getSimpleName(), channel);
+        checkArgument(!(channel.isEmpty()), "Cannot construct a %s action with the provided "
+                + "channel %s, expected a non-null and not empty String", this.getClass().getSimpleName(), channel);
         this.channel = channel;
         this.quickButtonDescriptors = new ArrayList<>();
 
@@ -101,23 +95,29 @@ public class PostMessage extends RuntimeMessageAction<TelegramPlatform> {
         sendMessage.setChatId(this.channel);
         sendMessage.setText(this.message);
         sendMessage.enableMarkdown(true);
-
         //If we have to provide a set of default options for the bot together with the textual response
         if (!quickButtonDescriptors.isEmpty()) {
 
             ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
             replyKeyboardMarkup.setSelective(true);
             replyKeyboardMarkup.setResizeKeyboard(true);
-            replyKeyboardMarkup.setOneTimeKeyboard(false);
+            replyKeyboardMarkup.setOneTimeKeyboard(true);
 
             // Create a list of keyboard rows
             List<KeyboardRow> keyboard = new ArrayList<>();
             for (QuickButtonDescriptor qb : quickButtonDescriptors) {
                 KeyboardRow kr = new KeyboardRow();
                 kr.add(qb.getValue());
+                keyboard.add(kr);
             }
             replyKeyboardMarkup.setKeyboard(keyboard);
             sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        } else {
+            // We completely remove the customkeyboard that could have been created by a previous button-based message
+            // As described here: {@see https://stackoverflow.com/questions/48120494/how-do-you-remove-reply-keyboard-without-sending-a-message-in-telegram} even if
+            // we mark keyboards as one-time the keyboard still remains as an option
+            ReplyKeyboardRemove keyboardRemove= new ReplyKeyboardRemove(true);
+            sendMessage.setReplyMarkup(keyboardRemove);
         }
 
         try {

@@ -39,8 +39,8 @@ public class Reply extends PostMessage {
      */
     public static String getChannel(@NonNull StateContext context) {
         Object channelValue = context.getEventInstance().getPlatformData().get(ChatUtils.CHAT_CHANNEL_CONTEXT_KEY);
-        checkNotNull(channelValue, "Cannot retrieve the Telegram channel from the context, expected a non null " +
-                ChatUtils.CHAT_CHANNEL_CONTEXT_KEY + " value, found %s", channelValue);
+        checkNotNull(channelValue, "Cannot retrieve the Telegram channel from the context, expected a non null "
+                + ChatUtils.CHAT_CHANNEL_CONTEXT_KEY + " value, found %s", channelValue);
         checkArgument(channelValue instanceof String, "Invalid Telegram channel type, expected %s, found %s",
                 String.class.getSimpleName(), channelValue.getClass().getSimpleName());
         return (String) channelValue;
