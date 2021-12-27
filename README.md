@@ -36,5 +36,6 @@ The Telegram platform supports the following configuration options
 | `xatkit.telegram.token` | String | The Telegram token used by Xatkit to interact with the [Telegram API](https://core.telegram.org/bots). You can get a token via the [BotFather service](https://core.telegram.org/bots#6-botfather) | Mandatory
 | `xatkit.telegram.botusername` | String | The username of your Telegram bot | Mandatory
 | `xatkit.telegram.botname` | String | The name of your Telegram bot | Optional
+| `xatkit.telegram.ignore_fallback_on_group_channels` | Boolean | Whether the bot should simply ignore messages it doesn't understand when in a group | Optional
 
 
