@@ -9,8 +9,7 @@ Receive and send messages from [Telegram](https://telegram.org/).
 
 The Telegram platform is a concrete implementation of the [*ChatPlatform*](https://github.com/xatkit-bot-platform/xatkit-chat-platform).
 
-We rely on [this](https://github.com/rubenlagus/TelegramBots) Java-based wrapper of the [Telegram API for Bots]
-(https://core.telegram.org/api#bot-api).
+We rely on [this](https://github.com/rubenlagus/TelegramBots) Java-based wrapper of the [Telegram API for Bots](https://core.telegram.org/api#bot-api).
 ## Providers
 
 The Telegram platform defines the following providers:
