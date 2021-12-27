@@ -16,6 +16,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import com.xatkit.plugins.telegram.platform.action.Reply;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -70,9 +72,12 @@ public class TelegramPlatform extends ChatPlatform {
     public void start(XatkitBot xatkitBot, Configuration configuration) {
         super.start(xatkitBot, configuration);
         String telegramToken = configuration.getString(TelegramUtils.TELEGRAM_TOKEN_KEY);
-        String botName = configuration.getString(TelegramUtils.TELEGRAM_BOT_NAME);
         String botUsername = configuration.getString(TelegramUtils.TELEGRAM_BOT_USERNAME);
-        if (nonNull(telegramToken) && nonNull(botUsername) && nonNull(botName)) {
+        String botName = configuration.getString(TelegramUtils.TELEGRAM_BOT_NAME);
+        if (isNull(botName)) {
+            botName = botUsername;
+        }
+        if (nonNull(telegramToken) && nonNull(botUsername)) {
            try {
                //We create the bot and link it with the telegramIntentProvider that will process updates from
                // Telegram received by the bot

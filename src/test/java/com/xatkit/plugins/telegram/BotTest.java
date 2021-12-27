@@ -102,8 +102,8 @@ public class BotTest {
                 .defaultFallbackState(defaultFallback);
 
         Configuration botConfiguration = new BaseConfiguration();
-        botConfiguration.addProperty("xatkit.telegram.botname", "Xatkit Test");
-        botConfiguration.addProperty("xatkit.telegram.botusername", "Your username");
+    //    botConfiguration.addProperty("xatkit.telegram.botname", "Xatkit Test");
+        botConfiguration.addProperty("xatkit.telegram.botusername", "Your bot's username");
         botConfiguration.addProperty("xatkit.telegram.token", "Your token");
      //   botConfiguration.addProperty("xatkit.telegram.ignore_fallback_on_group_channels", true);
 
