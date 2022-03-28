@@ -24,7 +24,7 @@ public class TelegramIntentProvider extends ChatIntentProvider<TelegramPlatform>
     private boolean ignoreFallbackOnGroupChannels;
 
     /**
-     * Constructs a {@link TelegramIntentProvider} and binds it to the provided {@code slackPlatform}.
+     * Constructs a {@link TelegramIntentProvider} and binds it to the provided {@code telegramPlatform}.
      *
      * @param telegramPlatform the {@link TelegramPlatform} managing this provider
      */
@@ -134,7 +134,7 @@ public class TelegramIntentProvider extends ChatIntentProvider<TelegramPlatform>
 
 
     /**
-     * Disconnects the underlying Slack RTM clients.
+     * Disconnects the underlying Telegram clients. Nothing to do here.
      */
     @Override
     public void close() {
