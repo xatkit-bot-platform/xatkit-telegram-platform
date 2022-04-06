@@ -38,4 +38,14 @@ The Telegram platform supports the following configuration options
 | `xatkit.telegram.botname` | String | The name of your Telegram bot | Optional
 | `xatkit.telegram.ignore_fallback_on_group_channels` | Boolean | Whether the bot should simply ignore messages it doesn't understand when in a group | Optional
 
+## Using the Telegram platform
 
+Check the BotTest sample bot included in the repo for an example of a bot using this platform. Make sure also to include this dependency to your pom
+
+```xml
+        <dependency>
+            <groupId>com.xatkit</groupId>
+            <artifactId>telegram-platform</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+```
