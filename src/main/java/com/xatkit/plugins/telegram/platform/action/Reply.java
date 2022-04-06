@@ -29,6 +29,10 @@ public class Reply extends PostMessage {
      * This method searches for the value stored with the {@link ChatUtils#CHAT_CHANNEL_CONTEXT_KEY} key in the
      * platform data of the current {@link EventInstance}.
      *
+     * Alternatively, it aims to retry the channel directly from the context object as we may be triggering the reply
+     * as part of a state behaviour that was NOT triggered by a Telegram intent matching (e.g. an EMAIL_RECEIVED
+     * event that should continue a previous Telegram conversation)
+     *
      * @param context the {@link StateContext} to retrieve the channel from
      * @return the channel associated to the user input
      * @throws NullPointerException     if the provided {@code context} is {@code null}, or if it does not contain the
@@ -38,12 +42,18 @@ public class Reply extends PostMessage {
      * @see EventInstance#getPlatformData()
      */
     public static String getChannel(@NonNull StateContext context) {
-        Object channelValue = context.getEventInstance().getPlatformData().get(ChatUtils.CHAT_CHANNEL_CONTEXT_KEY);
-        checkNotNull(channelValue, "Cannot retrieve the Telegram channel from the context, expected a non null "
-                + ChatUtils.CHAT_CHANNEL_CONTEXT_KEY + " value, found %s", channelValue);
-        checkArgument(channelValue instanceof String, "Invalid Telegram channel type, expected %s, found %s",
-                String.class.getSimpleName(), channelValue.getClass().getSimpleName());
-        return (String) channelValue;
+        String channelId;
+        try {
+            Object channelValue = context.getEventInstance().getPlatformData().get(ChatUtils.CHAT_CHANNEL_CONTEXT_KEY);
+            checkNotNull(channelValue, "Cannot retrieve the Telegram channel from the context, expected a non null "
+                    + ChatUtils.CHAT_CHANNEL_CONTEXT_KEY + " value, found %s", channelValue);
+            checkArgument(channelValue instanceof String, "Invalid Telegram channel type, expected %s, found %s",
+                    String.class.getSimpleName(), channelValue.getClass().getSimpleName());
+            channelId = (String) channelValue;
+        } catch (NullPointerException | IllegalArgumentException e) {
+            channelId = context.getContextId(); // the channel is used as Id in this platformcd .
+        }
+        return channelId;
     }
 
     /**
