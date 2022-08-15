@@ -49,3 +49,22 @@ Check the BotTest sample bot included in the repo for an example of a bot using 
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 ```
+## Tips
+
+### Bots that start the conversation
+To be able to write to a telegram group or user, you need to know the chat ID of that group or user.
+
+If the user starts a conversation, the channel ID will be stored in the context by the `TelegramIntentProvider` in the `handle` method (see `String channel = message.getChatId().toString();`);
+
+But if you want the bot to start the conversation, you'll need to create a context with the [proper chat id](https://www.alphr.com/find-chat-id-telegram/) yourself.
+
+```java
+StateContext contextTelegram = telegramPlatform.createSessionFromChannel(telegramChatId);
+telegramPlatform.reply(contextTelegram, telegramMessage);
+```
+
+### Format of the strings for the bot
+
+You can use markdown to format the strings that you send to the bot. The string can also contain emojis. Add them using their emoji unicode value.
+
+
